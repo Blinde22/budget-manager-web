@@ -1,7 +1,18 @@
 <h1>Dashboard</h1>
 <h2>Balance: {{ balance }}</h2>
 
-<a href="/add">Add new item</a>
+<a href="/">All Items</a> |
+<a href="/?type=income">Only Income</a> |
+<a href="/?type=expense">Only Expenses</a>
+<br><br>
+
+<form method="GET" action="/">
+    <input type="number" name="month" placeholder="Month (1-12)">
+    <input type="text" name="category" placeholder="Category">
+    <button type="submit">Filter</button>
+</form>
+
+<a href="/add">Add new item</a> |
 <a href="/logout">Logout</a>
 
 <ul>
