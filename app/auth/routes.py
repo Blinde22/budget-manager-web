@@ -37,4 +37,4 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('auth.login_
+        return redirect(url_for('auth.login'))
