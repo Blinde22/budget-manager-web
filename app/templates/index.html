@@ -1,0 +1,13 @@
+<h1>Dashboard</h1>
+<h2>Balance: {{ balance }}</h2>
+
+<a href="/add">Add new item</a>
+<a href="/logout">Logout</a>
+
+<ul>
+{% for item in items %}
+    <li>
+        {{ item.emoji }} {{ item.name }} - {{ item.amount }} ({{ item.category }}) - {{ 'Income' if item.is_income else 'Expense' }}
+    </li>
+{% endfor %}
+</ul>
