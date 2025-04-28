@@ -1,0 +1,24 @@
+<h1>My Taxes</h1>
+
+<form method="POST">
+    <input type="text" name="name" placeholder="Tax Name" required>
+    <input type="number" name="due_day" min="1" max="31" placeholder="Due Day" required>
+    <button type="submit">Add Tax</button>
+</form>
+
+<h2>Taxes</h2>
+<ul>
+{% for tax in taxes %}
+    <li>
+        {{ tax.name }} - Due on {{ tax.due_day }}th - 
+        {% if tax.is_paid %}
+            ✅ Paid ({{ tax.last_paid }})
+        {% else %}
+            ❌ Not Paid 
+            <a href="{{ url_for('main.pay_tax', tax_id=tax.id) }}">Mark as Paid</a>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+
+<a href="/">Back to Dashboard</a>
