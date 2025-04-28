@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from app import db
 from app.models.budget_item import BudgetItem
 from datetime import datetime
+from app.models.tax import Tax
+from datetime import date
 
 
 main = Blueprint('main', __name__)
@@ -97,4 +99,31 @@ def summary():
         balance=balance,
         savings_rate=savings_rate
     )
+
+
+@main.route('/taxes', methods=['GET', 'POST'])
+@login_required
+def taxes():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        due_day = int(request.form.get('due_day'))
+        new_tax = Tax(user_id=current_user.id, name=name, due_day=due_day)
+        db.session.add(new_tax)
+        db.session.commit()
+        return redirect(url_for('main.taxes'))
+
+    taxes = Tax.query.filter_by(user_id=current_user.id).all()
+    today = date.today()
+
+    return render_template('taxes.html', taxes=taxes, today=today)
+
+@main.route('/pay_tax/<int:tax_id>')
+@login_required
+def pay_tax(tax_id):
+    tax = Tax.query.get(tax_id)
+    if tax and tax.user_id == current_user.id:
+        tax.is_paid = True
+        tax.last_paid = date.today()
+        db.session.commit()
+    return redirect(url_for('main.taxes'))
 
