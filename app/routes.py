@@ -1,45 +1,39 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 from app import db
 from app.models.budget_item import BudgetItem
-from datetime import date
+from datetime import datetime
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 @login_required
 def index():
-    items = BudgetItem.query.filter_by(user_id=current_user.id).all()
+    filter_type = request.args.get('type')
+    filter_month = request.args.get('month')
+    filter_category = request.args.get('category')
+
+    query = BudgetItem.query.filter_by(user_id=current_user.id)
+
+    if filter_type == 'income':
+        query = query.filter_by(is_income=True)
+    elif filter_type == 'expense':
+        query = query.filter_by(is_income=False)
+
+    if filter_month:
+        try:
+            month = int(filter_month)
+            query = query.filter(db.extract('month', BudgetItem.date_added) == month)
+        except:
+            pass
+
+    if filter_category:
+        query = query.filter_by(category=filter_category)
+
+    items = query.all()
     balance = calculate_balance(items)
+
     return render_template('index.html', items=items, balance=balance)
-
-@main.route('/add', methods=['GET', 'POST'])
-@login_required
-def add_item():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        amount = float(request.form.get('amount'))
-        category = request.form.get('category')
-        is_income = request.form.get('is_income') == 'on'
-        is_recurring = request.form.get('is_recurring') == 'on'
-        emoji = request.form.get('emoji')
-
-        new_item = BudgetItem(
-            user_id=current_user.id,
-            name=name,
-            amount=amount,
-            category=category,
-            is_income=is_income,
-            is_recurring=is_recurring,
-            emoji=emoji,
-            date_added=date.today()
-        )
-        db.session.add(new_item)
-        db.session.commit()
-
-        return redirect(url_for('main.index'))
-
-    return render_template('add_item.html')
 
 def calculate_balance(items):
     balance = 0
