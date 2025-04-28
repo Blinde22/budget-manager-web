@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, logout_user
 from app import db
 from app.models.budget_item import BudgetItem
 from datetime import datetime
@@ -126,4 +126,40 @@ def pay_tax(tax_id):
         tax.last_paid = date.today()
         db.session.commit()
     return redirect(url_for('main.taxes'))
+
+@main.route('/add', methods=['GET', 'POST'])
+@login_required
+def add_item():
+    categories = Category.query.all()
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        amount = float(request.form.get('amount'))
+        category = request.form.get('category')
+        is_income = request.form.get('is_income') == 'on'
+        is_recurring = request.form.get('is_recurring') == 'on'
+        emoji = request.form.get('emoji')
+
+        new_item = BudgetItem(
+            user_id=current_user.id,
+            name=name,
+            amount=amount,
+            category=category,
+            is_income=is_income,
+            is_recurring=is_recurring,
+            emoji=emoji,
+            date_added=datetime.today()
+        )
+        db.session.add(new_item)
+        db.session.commit()
+
+        return redirect(url_for('main.index'))
+
+    return render_template('add_item.html', categories=categories)
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
 
