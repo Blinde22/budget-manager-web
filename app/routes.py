@@ -10,6 +10,8 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @login_required
 def index():
+    handle_recurring_items()
+    
     filter_type = request.args.get('type')
     filter_month = request.args.get('month')
     filter_category = request.args.get('category')
