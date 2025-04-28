@@ -5,6 +5,7 @@ from app.models.budget_item import BudgetItem
 from datetime import datetime
 from app.models.tax import Tax
 from datetime import date
+from app.models.category import Category
 
 
 main = Blueprint('main', __name__)
