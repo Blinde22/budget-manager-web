@@ -12,13 +12,24 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
+        print('Username entered:', username)
+        print('Password entered:', password)
+
         user = User.query.filter_by(username=username).first()
+
+        if user:
+            print('User found:', user.username)
+            print('Stored password hash:', user.password)
+        else:
+            print('No user found')
+
         if user and check_password_hash(user.password, password):
-            print('Login successful for user:', username)
+            print('Password correct! Logging in...')
             login_user(user)
             return redirect(url_for('main.index'))
         else:
-            flash('Invalid username or password')
+            print('Password incorrect or user missing')
+
     return render_template('login.html')
 
 @auth.route('/register', methods=['GET', 'POST'])
