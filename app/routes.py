@@ -75,3 +75,26 @@ def handle_recurring_items():
             )
             db.session.add(new_item)
         db.session.commit()
+
+@main.route('/summary')
+@login_required
+def summary():
+    items = BudgetItem.query.filter_by(user_id=current_user.id).all()
+
+    total_income = sum(item.amount for item in items if item.is_income)
+    total_expense = sum(item.amount for item in items if not item.is_income)
+    balance = total_income - total_expense
+
+    if total_income > 0:
+        savings_rate = (balance / total_income) * 100
+    else:
+        savings_rate = 0
+
+    return render_template(
+        'summary.html',
+        total_income=total_income,
+        total_expense=total_expense,
+        balance=balance,
+        savings_rate=savings_rate
+    )
+
