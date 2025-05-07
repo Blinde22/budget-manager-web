@@ -7,7 +7,10 @@
 <h2>Your Categories</h2>
 <ul>
 {% for cat in categories %}
-    <li>{{ cat.name }}</li>
+    <li>
+        {{ cat.name }}
+        <a href="{{ url_for('main.delete_category', category_id=cat.id) }}" class="text-danger ms-2">Delete</a>
+    </li>
 {% endfor %}
 </ul>
 
