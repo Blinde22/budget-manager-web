@@ -204,3 +204,12 @@ def add_category():
     categories = Category.query.filter_by(user_id=current_user.id).all()
     return render_template('add_category.html', categories=categories)
 
+@main.route('/delete_category/<int:category_id>')
+@login_required
+def delete_category(category_id):
+    cat = Category.query.get(category_id)
+    if cat and cat.user_id == current_user.id:
+        db.session.delete(cat)
+        db.session.commit()
+    return redirect(url_for('main.add_category'))
+
