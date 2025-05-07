@@ -7,4 +7,5 @@ class Tax(db.Model):
     due_day = db.Column(db.Integer, nullable=False)
     last_paid = db.Column(db.Date, nullable=True)
     is_paid = db.Column(db.Boolean, default=False)
+    is_recurring = db.Column(db.Boolean, default=False)
 
