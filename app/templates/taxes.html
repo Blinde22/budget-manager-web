@@ -17,6 +17,8 @@
             ❌ Not Paid 
             <a href="{{ url_for('main.pay_tax', tax_id=tax.id) }}">Mark as Paid</a>
         {% endif %}
+
+        | <a href="{{ url_for('main.delete_tax', tax_id=tax.id) }}" class="text-danger">Delete</a>
     </li>
 {% endfor %}
 </ul>
