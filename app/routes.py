@@ -191,3 +191,16 @@ def delete_tax(tax_id):
         db.session.commit()
     return redirect(url_for('main.taxes'))
 
+@main.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        if name:
+            new_cat = Category(name=name, user_id=current_user.id)
+            db.session.add(new_cat)
+            db.session.commit()
+            return redirect(url_for('main.add_category'))
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    return render_template('add_category.html', categories=categories)
+
