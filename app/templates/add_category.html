@@ -1,0 +1,14 @@
+<h1>Add Category</h1>
+<form method="POST">
+    <input type="text" name="name" placeholder="Category Name" required>
+    <button type="submit">Add Category</button>
+</form>
+
+<h2>Your Categories</h2>
+<ul>
+{% for cat in categories %}
+    <li>{{ cat.name }}</li>
+{% endfor %}
+</ul>
+
+<a href="/">Back to Dashboard</a>
