@@ -87,18 +87,26 @@ def summary():
     total_income = sum(item.amount for item in items if item.is_income)
     total_expense = sum(item.amount for item in items if not item.is_income)
     balance = total_income - total_expense
+    savings_rate = (balance / total_income * 100) if total_income > 0 else 0
 
-    if total_income > 0:
-        savings_rate = (balance / total_income) * 100
-    else:
-        savings_rate = 0
+    # 📊 Group expenses by category
+    category_totals = {}
+    for item in items:
+        if not item.is_income:
+            category_totals[item.category] = category_totals.get(item.category, 0) + item.amount
+
+    # Send labels and values separately to JS
+    chart_labels = list(category_totals.keys())
+    chart_values = list(category_totals.values())
 
     return render_template(
         'summary.html',
         total_income=total_income,
         total_expense=total_expense,
         balance=balance,
-        savings_rate=savings_rate
+        savings_rate=savings_rate,
+        chart_labels=chart_labels,
+        chart_values=chart_values
     )
 
 
