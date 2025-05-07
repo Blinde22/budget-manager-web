@@ -106,12 +106,19 @@ def summary():
 @login_required
 def taxes():
     if request.method == 'POST':
-        name = request.form.get('name')
-        due_day = int(request.form.get('due_day'))
-        new_tax = Tax(user_id=current_user.id, name=name, due_day=due_day)
-        db.session.add(new_tax)
-        db.session.commit()
-        return redirect(url_for('main.taxes'))
+    name = request.form.get('name')
+    due_day = int(request.form.get('due_day'))
+    is_recurring = request.form.get('is_recurring') == 'on'
+    
+    new_tax = Tax(
+        user_id=current_user.id,
+        name=name,
+        due_day=due_day,
+        is_recurring=is_recurring
+    )
+    db.session.add(new_tax)
+    db.session.commit()
+    return redirect(url_for('main.taxes'))
 
     taxes = Tax.query.filter_by(user_id=current_user.id).all()
     today = date.today()
