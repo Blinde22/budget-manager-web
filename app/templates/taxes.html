@@ -11,14 +11,14 @@
 <ul>
 {% for tax in taxes %}
     <li>
-        {{ tax.name }} - Due on {{ tax.due_day }}th - 
+        {{ tax.name }} - Due on {{ tax.due_day }}th
+        {% if tax.is_recurring %} 🔁 Recurring {% endif %} -
         {% if tax.is_paid %}
-            ✅ Paid ({{ tax.last_paid }})
+        ✅ Paid ({{ tax.last_paid }})
         {% else %}
-            ❌ Not Paid 
-            <a href="{{ url_for('main.pay_tax', tax_id=tax.id) }}">Mark as Paid</a>
+        ❌ Not Paid 
+        <a href="{{ url_for('main.pay_tax', tax_id=tax.id) }}">Mark as Paid</a>
         {% endif %}
-
         | <a href="{{ url_for('main.delete_tax', tax_id=tax.id) }}" class="text-danger">Delete</a>
     </li>
 {% endfor %}
