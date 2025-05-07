@@ -138,12 +138,12 @@ def pay_tax(tax_id):
 @main.route('/add', methods=['GET', 'POST'])
 @login_required
 def add_item():
-    categories = Category.query.all()
+    categories = Category.query.filter_by(user_id=current_user.id).all()
 
     if request.method == 'POST':
         name = request.form.get('name')
         amount = float(request.form.get('amount'))
-        category = request.form.get('category')
+        category = request.form.get('category')  # from dropdown
         is_income = request.form.get('is_income') == 'on'
         is_recurring = request.form.get('is_recurring') == 'on'
         emoji = request.form.get('emoji')
