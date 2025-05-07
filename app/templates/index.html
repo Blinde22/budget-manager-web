@@ -24,6 +24,7 @@
 {% for item in items %}
     <li>
         {{ item.emoji }} {{ item.name }} - {{ item.amount }} ({{ item.category }}) - {{ 'Income' if item.is_income else 'Expense' }}
+          <a href="{{ url_for('main.delete_item', item_id=item.id) }}" class="text-danger ms-2">Delete</a>
     </li>
 {% endfor %}
 </ul>
