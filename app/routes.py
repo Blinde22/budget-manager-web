@@ -164,3 +164,23 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
+
+@main.route('/delete_item/<int:item_id>')
+@login_required
+def delete_item(item_id):
+    item = BudgetItem.query.get(item_id)
+    if item and item.user_id == current_user.id:
+        db.session.delete(item)
+        db.session.commit()
+    return redirect(url_for('main.index'))
+
+
+@main.route('/delete_tax/<int:tax_id>')
+@login_required
+def delete_tax(tax_id):
+    tax = Tax.query.get(tax_id)
+    if tax and tax.user_id == current_user.id:
+        db.session.delete(tax)
+        db.session.commit()
+    return redirect(url_for('main.taxes'))
+
