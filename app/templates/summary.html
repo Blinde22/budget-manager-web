@@ -5,4 +5,31 @@
 <p><strong>Net Balance:</strong> {{ balance }}</p>
 <p><strong>Savings Rate:</strong> {{ savings_rate | round(2) }}%</p>
 
+<h2>Expense Breakdown by Category</h2>
+<canvas id="expenseChart" width="400" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('expenseChart');
+    const expenseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ chart_labels | tojson }},
+            datasets: [{
+                label: 'Expenses by Category',
+                data: {{ chart_values | tojson }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+</script>
+
 <a href="/">Back to Dashboard</a>
