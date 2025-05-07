@@ -3,7 +3,19 @@
     <input type="text" name="name" placeholder="Name" required><br>
     <input type="number" name="amount" step="0.01" placeholder="Amount" required><br>
     <input type="text" name="category" placeholder="Category"><br>
-    <input type="text" name="emoji" placeholder="Emoji"><br>
+
+    <label for="emoji">Emoji:</label><br>
+    <select name="emoji" id="emoji" required>
+        <option value="">Select Emoji</option>
+        <option value="🍕">🍕 Food</option>
+        <option value="🚌">🚌 Transport</option>
+        <option value="🏠">🏠 Housing</option>
+        <option value="💼">💼 Work</option>
+        <option value="💡">💡 Utilities</option>
+        <option value="💰">💰 Income</option>
+        <option value="🎉">🎉 Entertainment</option>
+        <option value="💳">💳 Debt</option>
+    </select><br><br>
 
     <label><input type="checkbox" name="is_income"> Is Income</label><br>
     <label><input type="checkbox" name="is_recurring"> Is Recurring</label><br>
