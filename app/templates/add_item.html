@@ -1,32 +1,55 @@
-<h1>Add Income/Expense</h1>
-<form method="POST">
-    <input type="text" name="name" placeholder="Name" required><br>
-    <input type="number" name="amount" step="0.01" placeholder="Amount" required><br>
-    <label for="category">Category:</label><br>
-    <select name="category" id="category" required>
-        <option value="">Select Category</option>
-        {% for cat in categories %}
-        <option value="{{ cat.name }}">{{ cat.name }}</option>
-        {% endfor %}
-    </select><br><br>
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4">Add Income/Expense</h1>
 
-    <label for="emoji">Emoji:</label><br>
-    <select name="emoji" id="emoji" required>
-        <option value="">Select Emoji</option>
-        <option value="🍕">🍕 Food</option>
-        <option value="🚌">🚌 Transport</option>
-        <option value="🏠">🏠 Housing</option>
-        <option value="💼">💼 Work</option>
-        <option value="💡">💡 Utilities</option>
-        <option value="💰">💰 Income</option>
-        <option value="🎉">🎉 Entertainment</option>
-        <option value="💳">💳 Debt</option>
-    </select><br><br>
+<form method="POST" class="mb-4">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" name="name" placeholder="Name" class="form-control" required>
+    </div>
 
-    <label><input type="checkbox" name="is_income"> Is Income</label><br>
-    <label><input type="checkbox" name="is_recurring"> Is Recurring</label><br>
+    <div class="mb-3">
+        <label class="form-label">Amount</label>
+        <input type="number" name="amount" step="0.01" placeholder="Amount" class="form-control" required>
+    </div>
 
-    <button type="submit">Add Item</button>
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <select name="category" id="category" class="form-select" required>
+            <option value="">Select Category</option>
+            {% for cat in categories %}
+            <option value="{{ cat.name }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Emoji</label>
+        <select name="emoji" id="emoji" class="form-select" required>
+            <option value="">Select Emoji</option>
+            <option value="🍕">🍕 Food</option>
+            <option value="🚌">🚌 Transport</option>
+            <option value="🏠">🏠 Housing</option>
+            <option value="💼">💼 Work</option>
+            <option value="💡">💡 Utilities</option>
+            <option value="💰">💰 Income</option>
+            <option value="🎉">🎉 Entertainment</option>
+            <option value="💳">💳 Debt</option>
+        </select>
+    </div>
+
+    <div class="form-check mb-2">
+        <input type="checkbox" name="is_income" class="form-check-input" id="is_income">
+        <label for="is_income" class="form-check-label">Is Income</label>
+    </div>
+
+    <div class="form-check mb-4">
+        <input type="checkbox" name="is_recurring" class="form-check-input" id="is_recurring">
+        <label for="is_recurring" class="form-check-label">Is Recurring</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Item</button>
 </form>
 
-<a href="/">Back to Dashboard</a>
+<a href="/" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}
