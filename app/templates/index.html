@@ -1,31 +1,26 @@
-<h1>Dashboard</h1>
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
 <h2>Balance: {{ balance }}</h2>
 
-
-<a href="/">All Items</a> |
-<a href="/?type=income">Only Income</a> |
-<a href="/?type=expense">Only Expenses</a> |
-<a href="/summary">View Summary</a> |
-<a href="{{ url_for('main.add_category') }}">Manage Categories</a> |
-<a href="/add">Add New Item</a> |
-<a href="{{ url_for('main.taxes') }}">Manage Taxes</a> |
-<a href="/logout">Logout</a>
-
-<br><br>
-
-
-<form method="GET" action="/">
-    <input type="number" name="month" placeholder="Month (1-12)">
-    <input type="text" name="category" placeholder="Category">
-    <button type="submit">Filter</button>
+<form method="GET" action="/" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="number" name="month" class="form-control" placeholder="Month (1-12)">
+    </div>
+    <div class="col-md-4">
+        <input type="text" name="category" class="form-control" placeholder="Category">
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
 </form>
 
-
-<ul>
+<ul class="list-group">
 {% for item in items %}
-    <li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ item.emoji }} {{ item.name }} - {{ item.amount }} ({{ item.category }}) - {{ 'Income' if item.is_income else 'Expense' }}
-          <a href="{{ url_for('main.delete_item', item_id=item.id) }}" class="text-danger ms-2">Delete</a>
+        <a href="{{ url_for('main.delete_item', item_id=item.id) }}" class="btn btn-sm btn-danger">Delete</a>
     </li>
 {% endfor %}
 </ul>
+{% endblock %}
