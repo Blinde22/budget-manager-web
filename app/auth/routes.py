@@ -12,23 +12,13 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        print('Username entered:', username)
-        print('Password entered:', password)
-
         user = User.query.filter_by(username=username).first()
 
-        if user:
-            print('User found:', user.username)
-            print('Stored password hash:', user.password)
-        else:
-            print('No user found')
-
         if user and check_password_hash(user.password, password):
-            print('Password correct! Logging in...')
             login_user(user)
             return redirect(url_for('main.index'))
         else:
-            print('Password incorrect or user missing')
+            flash('Invalid username or password')
 
     return render_template('login.html')
 
@@ -52,3 +42,9 @@ def register():
         return redirect(url_for('auth.login'))
     
     return render_template('register.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
